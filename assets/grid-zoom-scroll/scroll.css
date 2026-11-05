@@ -154,21 +154,10 @@ body {
 
 @media (max-width: 52.99em) {
 	:root { font-size: 14px; }
-	.hero__title .line--in { padding-left: 8vw; }
+	.hero__title { font-size: 18vw; }
+	.hero__title .line:first-child .w { display: block; }
+	.hero__title .line--in { padding-left: 0; }
+	.hero__title .line:last-child { font-size: 1.3em; }
+	.outro__title { font-size: 16vw; }
 	.copy__p { font-size: 1.05rem; }
 }
-
-.back {
-	position: fixed;
-	top: 1.2rem;
-	left: 5vw;
-	z-index: 100;
-	font-size: 0.9rem;
-	font-weight: 500;
-	color: var(--ink);
-	text-decoration: none;
-	opacity: 0.55;
-	mix-blend-mode: difference;
-	filter: invert(1);
-}
-.back:hover { opacity: 1; }
