@@ -4,6 +4,6 @@
     "title": "Grid Zoom, on scroll",
     "kind": "Scroll animation",
     "tech": "GSAP · ScrollTrigger",
-    "cover": "assets/grid-zoom-scroll/img/3.jpg"
+    "cover": "assets/grid-zoom-scroll/img/millions.jpg"
   }
 ]
