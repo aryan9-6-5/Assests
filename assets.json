@@ -5,13 +5,13 @@
     "kind": "Scroll animation",
     "tech": "GSAP · ScrollTrigger",
     "cover": "assets/grid-zoom-scroll/img/millions.jpg",
-    "description": "Giant type gives way to four artworks that bloom from a crowd of dots into full frames, then fold back into an uneven, golden-ratio collage. Scroll only.",
+    "description": "Giant type gives way to four images that bloom from a small tile into full frames, then fold back into an uneven, golden-ratio collage. Scroll only.",
     "tags": [
       "scrollytelling",
       "GSAP",
       "typographic",
       "golden ratio",
-      "generative"
+      "photography"
     ]
   }
 ]

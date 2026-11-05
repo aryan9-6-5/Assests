@@ -10,7 +10,7 @@ Static site. No build step, no framework. HTML, CSS and a little JavaScript.
 
 | Asset | What it is | Built with |
 |---|---|---|
-| [Grid Zoom, on scroll](assets/grid-zoom-scroll/) | Giant type gives way to four artworks that open one after another as you scroll | GSAP, ScrollTrigger |
+| [Grid Zoom, on scroll](assets/grid-zoom-scroll/) | Giant type gives way to four images that open one after another as you scroll | GSAP, ScrollTrigger |
 
 ## Structure
 
@@ -55,5 +55,5 @@ npx vercel deploy --prod
 
 ## Notes
 
-- All imagery in this repo is original or generated. Do not add third-party photos without a licence that allows it.
+- Only add images you have the right to use.
 - Respects `prefers-reduced-motion` and works from phone width upward.

@@ -2,7 +2,7 @@
 
 > Your opinions were made for you.
 
-A scroll-driven piece after Edward Bernays' *Propaganda* (1928). A plain page of very large type gives way to four artworks. Each one grows from a small tile into a full frame, reads its passage, then folds back into an uneven collage laid out with the golden ratio. No clicks, only scroll.
+A scroll-driven piece after Edward Bernays' *Propaganda* (1928). A plain page of very large type gives way to four images. Each one grows from a small tile into a full frame, reads its passage, then folds back into an uneven collage laid out with the golden ratio. No clicks, only scroll.
 
 ## The three beats
 
@@ -16,7 +16,7 @@ A scroll-driven piece after Edward Bernays' *Propaganda* (1928). A plain page of
 index.html     markup: hero, stage, outro, back link
 scroll.css     type, layout, responsive rules
 scroll.js      the whole animation (GSAP ScrollTrigger)
-img/           original generated artwork
+img/           the four images (masses, invisible, mechanism, millions)
 ```
 
 ## How it works
@@ -35,13 +35,13 @@ img/           original generated artwork
 - **Scroll length:** `end` on the stage trigger is `chapters.length * 140%`. Raise 140 for a slower read.
 - **Colours and type:** CSS variables at the top of `scroll.css`.
 
-## Artwork
+## Images
 
-All four images are generated, not photographed: a dot field, veil lines, turning squares and a halftone moon. Replace any file in `img/` and keep the name in the `img` field.
+Four photographs supplied by the author: a concert crowd, a still sea under stars, curved architecture and a tower of windows. Replace any file in `img/` and keep the name in the `img` field. Check the licence of any image you add.
 
 ## Tags
 
-scroll-triggered, scrollytelling, GSAP, ScrollTrigger, pinned timeline, typographic, editorial, minimal, golden ratio, asymmetric layout, generative art, halftone, responsive
+scroll-triggered, scrollytelling, GSAP, ScrollTrigger, pinned timeline, typographic, editorial, minimal, golden ratio, asymmetric layout, photography, responsive
 
 ## Credits
 
