@@ -6,5 +6,7 @@ fetch('assets.json')
 			<a class="card" href="assets/${a.slug}/">
 				<div class="card__img"><img src="${a.cover}" alt="" loading="lazy"></div>
 				<div class="card__meta"><span class="card__title">${a.title}</span><span class="card__kind">${a.kind}<br>${a.tech}</span></div>
+				<p class="card__desc">${a.description || ''}</p>
+				<p class="card__tags">${(a.tags || []).join(' · ')}</p>
 			</a>`).join('');
 	});

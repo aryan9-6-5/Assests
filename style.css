@@ -14,3 +14,7 @@ body { margin: 0; background: var(--bg); color: var(--ink); font-family: Manrope
 .card__title { font-weight: 700; }
 .card__kind { color: var(--muted); text-align: right; }
 @media (prefers-reduced-motion: reduce) { .card__img img { transition: none; } }
+
+.card__desc { margin: 0.7rem 0 0; font-size: 0.92rem; color: var(--ink); max-width: 44ch; }
+.card__tags { margin: 0.5rem 0 0; font-size: 0.8rem; color: var(--muted); }
+.foot { padding: 4vh 5vw 6vh; font-size: 0.85rem; color: var(--muted); }
