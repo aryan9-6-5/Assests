@@ -1,0 +1,174 @@
+*, *::before, *::after { box-sizing: border-box; }
+
+:root {
+	--bg: #f7f5ee;
+	--ink: #14110d;
+	--accent: #823725;
+	font-size: 15px;
+}
+
+html { background: var(--bg); }
+
+body {
+	margin: 0;
+	color: var(--ink);
+	background: var(--bg);
+	font-family: Manrope, system-ui, sans-serif;
+	-webkit-font-smoothing: antialiased;
+	line-height: 1;
+}
+
+/* ---------- plain statement ---------- */
+.hero {
+	min-height: 100vh;
+	min-height: 100svh;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding: 12svh 5vw;
+	position: relative;
+	overflow: hidden;
+}
+
+.hero__title {
+	margin: 0;
+	font-weight: 600;
+	font-size: min(12vw, 20svh);
+	line-height: 0.88;
+	letter-spacing: -0.035em;
+}
+
+.hero__title .line { display: block; white-space: nowrap; }
+.hero__title .line--in { padding-left: 14.6vw; } /* 100vw / phi^4 */
+.hero__title .line:last-child { text-align: right; font-size: 1.618em; color: var(--accent); }
+.hero__title .w { display: inline-block; }
+
+.hero__note {
+	position: absolute;
+	right: 5vw;
+	bottom: 5vh;
+	margin: 0;
+	text-align: right;
+	max-width: 26ch;
+	font-size: 1rem;
+	line-height: 1.35;
+	opacity: 0.6;
+}
+
+/* ---------- pinned stage ---------- */
+.stage {
+	position: relative;
+	height: 100vh;
+	height: 100svh;
+	overflow: hidden;
+}
+
+.stage__counter {
+	position: absolute;
+	right: 2.2vw;
+	bottom: 3vh;
+	font-weight: 600;
+	font-variant-numeric: tabular-nums;
+	z-index: 50;
+	opacity: 0.55;
+}
+
+.card {
+	position: absolute;
+	overflow: hidden;
+	border-radius: 8px;
+	opacity: 0;
+	will-change: left, top, width, height;
+}
+
+.card__img {
+	width: 100%;
+	height: 100%;
+	background-size: cover;
+	background-position: 50% 50%;
+}
+
+.copy {
+	position: absolute;
+	z-index: 40;
+	pointer-events: none;
+}
+
+.copy__num { display: block; font-weight: 600; margin-bottom: 1.1rem; }
+
+.copy__h {
+	margin: 0 0 1.6rem;
+	font-weight: 600;
+	font-size: clamp(2.6rem, 8vw, 9rem);
+	line-height: 0.92;
+	letter-spacing: -0.03em;
+	overflow: hidden;
+	padding-bottom: 0.08em;
+}
+
+.copy__h span { display: inline-block; }
+
+.copy__p {
+	margin: 0;
+	max-width: 32ch;
+	font-size: 1.15rem;
+	line-height: 1.4;
+}
+
+/* ---------- closing ---------- */
+.outro {
+	min-height: 100vh;
+	min-height: 100svh;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding: 12svh 5vw;
+	position: relative;
+	overflow: hidden;
+}
+
+.outro__title {
+	margin: 0;
+	white-space: nowrap;
+	font-weight: 600;
+	font-size: min(14vw, 24svh);
+	line-height: 0.88;
+	letter-spacing: -0.04em;
+	overflow: hidden;
+	padding-bottom: 0.1em;
+}
+
+.outro__title .ow { display: inline-block; }
+.outro__title .ow--in { color: var(--accent); font-size: 1.618em; float: right; clear: both; }
+.outro__title { text-align: left; }
+
+
+.outro__credit {
+	position: absolute;
+	left: 5vw;
+	bottom: 5vh;
+	margin: 0;
+	font-size: 0.9rem;
+	opacity: 0.5;
+}
+
+@media (max-width: 52.99em) {
+	:root { font-size: 14px; }
+	.hero__title .line--in { padding-left: 8vw; }
+	.copy__p { font-size: 1.05rem; }
+}
+
+.back {
+	position: fixed;
+	top: 1.2rem;
+	left: 5vw;
+	z-index: 100;
+	font-size: 0.9rem;
+	font-weight: 500;
+	color: var(--ink);
+	text-decoration: none;
+	opacity: 0.55;
+	mix-blend-mode: difference;
+	filter: invert(1);
+}
+.back:hover { opacity: 1; }

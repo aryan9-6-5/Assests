@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Grid Zoom, on scroll</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700&display=swap">
+	<link rel="stylesheet" href="scroll.css" />
+</head>
+<body>
+	<a class="back" href="../../">&larr; Assets</a>
+	<main>
+		<!-- 1. Plain statement -->
+		<section class="hero" id="hero">
+			<h1 class="hero__title" aria-label="Your opinions were made for you.">
+				<span class="line"><span class="w">Your</span> <span class="w">opinions</span></span>
+				<span class="line line--in"><span class="w">were</span> <span class="w">made</span></span>
+				<span class="line"><span class="w">for</span> <span class="w">you.</span></span>
+			</h1>
+		</section>
+
+		<!-- 2. Pinned sequence -->
+		<section class="stage" id="stage">
+		</section>
+
+		<!-- 3. Plain closing -->
+		<section class="outro">
+			<h2 class="outro__title"><span class="ow">Who</span> <span class="ow">made</span><br><span class="ow ow--in">yours?</span></h2>
+		</section>
+	</main>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+	<script src="scroll.js"></script>
+</body>
+</html>
