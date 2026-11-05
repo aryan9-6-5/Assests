@@ -8,20 +8,20 @@ const IMG = 'img/';
 const chapters = [
 	{ n: '01', h: 'Masses', img: 8,
 	  p: 'The instruments by which public opinion is organized and focused may be misused. But such organization and focusing are necessary to orderly life.',
-	  d: { rest: [3, 41, 42, 59],  open: [44, 10, 50, 80], text: [6, 24, 32] },
-	  m: { rest: [4, 56, 64, 32],  open: [6, 7, 88, 46],   text: [6, 58, 88] } },
+	  d: { rest: [3, 41, 41, 59],  open: [44, 10, 50, 80], text: [6, 24, 32] },
+	  m: { rest: [4, 56, 56, 30],  open: [6, 7, 88, 46],   text: [6, 58, 88] } },
 	{ n: '02', h: 'Invisible', img: 7,
 	  p: 'As civilization has become more complex, and as the need for invisible government has been increasingly demonstrated, the technical means have been invented and developed by which opinion may be regimented.',
-	  d: { rest: [14, 0, 27, 38],  open: [4, 6, 54, 62],   text: [64, 44, 30] },
+	  d: { rest: [14, 0, 27, 36],  open: [4, 6, 54, 62],   text: [64, 44, 30] },
 	  m: { rest: [4, 2, 52, 20],  open: [6, 7, 88, 46],   text: [6, 58, 88] } },
 	{ n: '03', h: 'Mechanism', img: 3,
 	  p: 'No matter how sophisticated, how cynical the public may become about publicity methods, it must respond to the basic appeals, because it will always need food, crave amusement, long for beauty, respond to leadership.',
-	  d: { rest: [46, 27, 19, 73], open: [30, 12, 34, 78], text: [68, 18, 28] },
-	  m: { rest: [14, 26, 30, 26], open: [14, 7, 72, 50],  text: [6, 62, 88] } },
+	  d: { rest: [47, 30, 18, 70], open: [30, 12, 34, 78], text: [68, 18, 28] },
+	  m: { rest: [14, 27, 30, 24], open: [14, 7, 72, 50],  text: [6, 62, 88] } },
 	{ n: '04', h: 'Millions', img: 15,
 	  p: 'This practice of creating circumstances and of creating pictures in the minds of millions of persons is very common.',
-	  d: { rest: [67, 3, 30, 94],  open: [52, 4, 44, 58],  text: [5, 54, 40] },
-	  m: { rest: [60, 12, 36, 44],  open: [6, 7, 88, 40],   text: [6, 52, 88] } }
+	  d: { rest: [68, 3, 29, 94],  open: [52, 4, 44, 58],  text: [5, 54, 40] },
+	  m: { rest: [64, 12, 32, 46],  open: [6, 7, 88, 40],   text: [6, 52, 88] } }
 ];
 
 const stage = document.getElementById('stage');
