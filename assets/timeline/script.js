@@ -6,7 +6,7 @@ const clamp=(v,a,b)=>Math.min(Math.max(v,a),b);
 const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 /* ---------- Lenis smooth scroll, driven by the GSAP ticker ---------- */
-const lenis=new Lenis({autoRaf:false});
+const lenis=new Lenis({autoRaf:false,duration:0.9,wheelMultiplier:1.0,syncTouch:false});
 lenis.on("scroll",ScrollTrigger.update);
 gsap.ticker.add(t=>lenis.raf(t*1000));
 gsap.ticker.lagSmoothing(0);
@@ -84,15 +84,17 @@ function pose({from,mid,to},p){
 }
 function draw(){
   const {w,h,dpr}=size,p=prog.progress;
-  const W=Math.max(1.02*w,1.06*h*RATIO),H=W/RATIO;
+  const W=Math.max(1.08*w,1.15*h*RATIO),H=W/RATIO;
+  ctx.fillStyle="#000";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
   for(let i=0;i<SEGS.length;i++){
     const f=frames[i];if(!f)continue;
     const {x,y,scale}=pose(SEGS[i],p),dw=W*scale,dh=H*scale;
-    const cx=w/2+x/100*W,cy=H/2+y/100*H;
+    const cx=w/2+x/100*W,cy=h/2+y/100*H;
     ctx.drawImage(f,(cx-dw/2)*dpr,(cy-dh/2)*dpr,dw*dpr,dh*dpr);
   }
   const a=.3*(1-clamp(p,0,1.5)/1.5);
-  if(a>0){ctx.fillStyle=`rgba(0,0,0,${a})`;ctx.fillRect(0,0,w*dpr,h*dpr)}
+  if(a>0){ctx.fillStyle=`rgba(0,0,0,${a})`;ctx.fillRect(0,0,canvas.width,canvas.height)}
 }
 function resize(){
   size.w=canvas.clientWidth;size.h=canvas.clientHeight;size.dpr=Math.min(devicePixelRatio||1,2);
@@ -145,20 +147,27 @@ function timeline(){
     items.forEach(it=>{
       const rev=$(".reveal",it),img=$(".reveal img",it);
       if(!rev||!img)return;
-      gsap.timeline({scrollTrigger:{trigger:it,start:"top bottom",end:"center center",scrub:true}})
+      gsap.timeline({scrollTrigger:{trigger:it,start:"top bottom",end:"center 85%",scrub:true}})
         .fromTo(rev,{clipPath:"inset(0% 0% 100% 0%)"},{clipPath:"inset(0% 0% 0% 0%)",ease:"sine.inOut"},0)
         .fromTo(img,{yPercent:-30},{yPercent:0,ease:"sine.inOut"},0);
     });
   };
   mm.add("(min-width: 768px)",()=>{
-    const update=()=>{
-      const r=root.getBoundingClientRect(),mid=innerHeight/2;
-      const y0=years[0]?(()=>{const yr=years[0].getBoundingClientRect();return Math.max(yr.top-r.top+yr.height/2,0)})():0;
-      const vh=innerHeight,n=mid-y0;
-      let s=(y0>0&&r.top>n&&vh!==n)?y0*clamp((vh-r.top)/(vh-n),0,1):mid-r.top;
-      gsap.set(fill,{height:clamp(s,0,r.height)});
+    let rootTop=0,rootHeight=0,y0=0;
+    const measure=()=>{
+      const r=root.getBoundingClientRect();
+      rootTop=r.top+scrollY;rootHeight=r.height;
+      if(years[0]){
+        const yr=years[0].getBoundingClientRect();
+        y0=Math.max(yr.top-r.top+yr.height/2,0);
+      }
     };
-    ScrollTrigger.create({trigger:root,start:"top bottom",end:"bottom center",onUpdate:update,onRefresh:update});update();
+    const update=()=>{
+      const rTop=rootTop-scrollY,mid=innerHeight/2,vh=innerHeight,n=mid-y0;
+      let s=(y0>0&&rTop>n&&vh!==n)?y0*clamp((vh-rTop)/(vh-n),0,1):mid-rTop;
+      gsap.set(fill,{height:clamp(s,0,rootHeight)});
+    };
+    ScrollTrigger.create({trigger:root,start:"top bottom",end:"bottom center",onRefresh:()=>{measure();update()},onUpdate:update});
     const set=(el,on)=>gsap.to(el,{opacity:on?1:.4,duration:.2,overwrite:"auto"});
     years.forEach(el=>{
       const past=()=>{const r=el.getBoundingClientRect();gsap.set(el,{opacity:r.top+r.height/2<=innerHeight/2?1:.4})};
@@ -168,8 +177,10 @@ function timeline(){
     common();
   });
   mm.add("(max-width: 767px)",()=>{
-    const update=()=>{const r=root.getBoundingClientRect();gsap.set(fill,{height:clamp(innerHeight/2-r.top,0,r.height)})};
-    ScrollTrigger.create({trigger:root,start:"top bottom",end:"bottom center",onUpdate:update,onRefresh:update});update();
+    let rootTop=0,rootHeight=0;
+    const measure=()=>{const r=root.getBoundingClientRect();rootTop=r.top+scrollY;rootHeight=r.height};
+    const update=()=>{gsap.set(fill,{height:clamp(innerHeight/2-(rootTop-scrollY),0,rootHeight)})};
+    ScrollTrigger.create({trigger:root,start:"top bottom",end:"bottom center",onRefresh:()=>{measure();update()},onUpdate:update});
     items.forEach(it=>ScrollTrigger.create({trigger:it,start:"top center",end:"bottom center",toggleClass:{targets:it,className:"act"}}));
     common();
   });
@@ -196,10 +207,10 @@ const DESC=[
 ];
 /* each variant changes layout AND timing: card/text rects [l,t,w,h] in vw/vh, image move, duration, ease */
 const VARIANTS=[
-  {d:{card:[6,10,52,80],text:[64,30,30]},m:{card:[6,7,88,46],text:[6,58,88]},zoom:1.35,dx:0,dy:0,dur:1.3,ease:"power3.inOut",tx:30,tdelay:.55},
-  {d:{card:[42,10,52,80],text:[6,32,30]},m:{card:[6,7,88,46],text:[6,58,88]},zoom:1.2,dx:-14,dy:0,dur:1.1,ease:"expo.inOut",tx:-30,tdelay:.45},
-  {d:{card:[30,8,36,84],text:[70,34,26]},m:{card:[14,7,72,50],text:[6,62,88]},zoom:1.55,dx:0,dy:10,dur:1.5,ease:"power4.inOut",tx:30,tdelay:.7},
-  {d:{card:[6,8,64,58],text:[40,72,54]},m:{card:[6,7,88,40],text:[6,52,88]},zoom:1.25,dx:12,dy:0,dur:1.2,ease:"sine.inOut",tx:0,tdelay:.5}
+  {d:{card:[4,8,58,84],text:[66,30,28]},m:{card:[6,7,88,46],text:[6,58,88]},ease:"power3.inOut",tx:30},
+  {d:{card:[38,8,58,84],text:[4,32,30]},m:{card:[6,7,88,46],text:[6,58,88]},ease:"power3.inOut",tx:-30},
+  {d:{card:[28,6,40,88],text:[71,34,25]},m:{card:[14,7,72,50],text:[6,62,88]},ease:"power3.inOut",tx:30},
+  {d:{card:[4,6,68,60],text:[40,72,54]},m:{card:[6,7,88,40],text:[6,52,88]},ease:"power3.inOut",tx:0}
 ];
 function scrollOpen(){
   const L=(a,b,t)=>a+(b-a)*t;
@@ -207,13 +218,15 @@ function scrollOpen(){
   const R=([l,t,w,h])=>({l:innerWidth*l/100,t:innerHeight*t/100,w:innerWidth*w/100,h:innerHeight*(h||0)/100});
   let z=200;
 
-  $$("[data-item]").forEach((item,i)=>{
+  const ITEMS=$$("[data-item]");
+  ITEMS.forEach((item,i)=>{
     const child=$(".child",item),src=$(".reveal img",item),V=VARIANTS[i%VARIANTS.length];
     const title=$("h3 .in",item).firstChild.textContent,year=$(".ym",item).textContent,href=item.getAttribute("href");
 
     const ov=document.createElement("div");ov.className="ov";
-    ov.innerHTML='<div class="ov-bg"></div><div class="ov-card"><div class="ov-img"></div></div>'+
+    ov.innerHTML='<div class="ov-bg"></div><div class="ov-card"><img class="ov-img" src="'+(src.currentSrc||src.src)+'" alt=""></div>'+
       '<div class="ov-copy"><span class="ov-num"></span><h2 class="ov-h"><span></span></h2><p class="ov-p"></p></div>';
+    ov.style.zIndex=200+i; /* fixed by page order, never reshuffled by scroll direction */
     document.body.appendChild(ov);
     const bg=$(".ov-bg",ov),card=$(".ov-card",ov),inner=$(".ov-img",ov),copy=$(".ov-copy",ov),
           num=$(".ov-num",ov),h=$(".ov-h span",ov),hh=$(".ov-h",ov),p=$(".ov-p",ov);
@@ -221,30 +234,79 @@ function scrollOpen(){
     p.innerHTML=DESC[i%DESC.length]+(href?` <a href="${href}">Ver obra →</a>`:"");
     let k=desk()?V.d:V.m;
 
-    const proxy={v:0};
-    function apply(){
-      const v=proxy.v;
-      if(v>0.0005){
-        if(ov.style.visibility!=="visible"){ov.style.visibility="visible";child.style.visibility="hidden"}
-      }else{ov.style.visibility="hidden";child.style.visibility="visible";return}
-      const r=child.getBoundingClientRect(),o=R(k.card);   // live rect: the card leaves from / returns to where the item actually is
-      gsap.set(card,{left:L(r.left,o.l,v),top:L(r.top,o.t,v),width:L(r.width,o.w,v),height:L(r.height,o.h,v)});
-      gsap.set(inner,{scale:L(V.zoom,1,v),xPercent:V.dx*(1-v),yPercent:V.dy*(1-v)});
-      gsap.set(bg,{opacity:.9*v});
-    }
+    let rBox={top:0,left:0,width:0,height:0};
     function layout(){
       k=desk()?V.d:V.m;const t=R(k.text);
       gsap.set(copy,{left:t.l,top:t.t,width:t.w});
       gsap.set(hh,{fontSize:Math.min(desk()?7:12,(k.text[2]*.92)/(title.length*.5))+"vw"});
+      measure();
+    }
+    /* The open card keeps the thumbnail's own proportions (fitted inside the variant's box), so growing is a
+       single uniform scale of the same picture: no stretch, no change of crop, nothing zoomed or shifted inside. */
+    let O={l:0,t:0,w:1,h:1};
+    function measure(){
+      const b=child.getBoundingClientRect();
+      rBox={top:b.top+scrollY,left:b.left,width:b.width,height:b.height};
+      const vw=innerWidth,vh=innerHeight,a=rBox.width/Math.max(rBox.height,1);
+      /* desktop: the open frame is as large as the screen allows at the picture's own proportions,
+         so it always grows from the thumbnail. phone: the variant's box. */
+      const box=desk()?{l:vw*.03,t:vh*.07,w:vw*.94,h:vh*.86}:R(k.card);
+      let w=box.w,h2=w/a;
+      if(h2>box.h){h2=box.h;w=h2*a}
+      const textLeft=k.text[0]<50;                       /* variant puts its text on the left -> card sits right */
+      const l=desk()?(textLeft?box.l+box.w-w:box.l):box.l+(box.w-w)/2;
+      O={l,t:box.t+(box.h-h2)/2,w,h:h2};
+      gsap.set(card,{left:O.l,top:O.t,width:O.w,height:O.h,transformOrigin:"0 0"});
+      /* text: beside the frame when there is room, otherwise over a soft shade at the bottom of the picture */
+      const gap=vw*.03,room=box.w-w-gap;
+      let tl_,tt,tw,over=false;
+      if(!desk()){const t=R(k.text);tl_=t.l;tt=t.t;tw=t.w}
+      else if(room>=vw*.22){tw=room-gap;tl_=textLeft?box.l:O.l+O.w+gap;tt=O.t+O.h*.3}
+      else{over=true;tw=Math.min(O.w*.55,vw*.42);tl_=O.l+vw*.02;tt=O.t+O.h-vh*.3}
+      gsap.set(copy,{left:tl_,top:tt,width:tw});
+      gsap.set(hh,{fontSize:Math.min(desk()?7:12,(tw/vw*100*.92)/(title.length*.5))+"vw"});
+      card.classList.toggle("shade",over);
+      if(src.currentSrc&&inner.src!==src.currentSrc)inner.src=src.currentSrc;
+    }
+    const proxy={v:0};
+    function apply(){
+      const v=proxy.v;
+      if(v>0.0005){
+        if(ov.style.visibility!=="visible"){ov.style.visibility="visible";measure()}
+        child.style.opacity=0; /* the card IS the thumbnail while it is open: hand over instantly, same pixels */
+      }else{
+        ov.style.visibility="hidden";
+        child.style.opacity=1;
+        return;
+      }
+      const sx=rBox.left,sy=rBox.top-scrollY,s0=rBox.width/O.w;
+      gsap.set(card,{x:L(sx,O.l,v)-O.l,y:L(sy,O.t,v)-O.t,scale:L(s0,1,v)});
+      gsap.set(bg,{opacity:.9*v});
+      card.style.setProperty("--shade",clamp((v-.5)*2,0,1));
     }
     layout();
-    gsap.set(inner,{backgroundImage:"none"});
+    if(!src.complete)src.addEventListener("load",()=>{if(inner.src!==src.currentSrc)inner.src=src.currentSrc||src.src},{once:true});
     /* ONE scrubbed timeline per card, length 1 = the card's whole pass through the screen:
        image grows 0 -> .38, text reads in after the image is nearly open (.30 -> .55),
        hold, text leaves (.66 -> .78), image returns (.76 -> 1). Everything is driven by scroll. */
     const tl=gsap.timeline({defaults:{ease:"none"},scrollTrigger:{
-      trigger:item,start:"center 85%",end:"center 15%",scrub:true,
-      onToggle:s=>{if(s.isActive){layout();inner.style.backgroundImage=`url(${src.currentSrc||src.src})`;ov.style.zIndex=++z}},
+      trigger:item,
+      start:()=>desk()?"center 85%":"center 75%",
+      /* pass length = 70% (desktop) / 50% (phone) of the screen, but never longer than the distance to the next
+         card minus a gap, so one card has fully closed before the next one begins */
+      end:()=>{
+        const own=innerHeight*(desk()?.7:.5),nx=ITEMS[i+1];
+        if(!nx)return"+="+own;
+        const c=e=>{const b=e.getBoundingClientRect();return b.top+b.height/2};
+        return"+="+Math.max(240,Math.min(own,c(nx)-c(item)-48));
+      },
+      invalidateOnRefresh:true,
+      scrub:true,
+      onToggle:s=>{
+        if(s.isActive){
+          layout();
+        }
+      },
       onRefresh:layout
     }});
     tl.fromTo(proxy,{v:0},{v:1,duration:.38,ease:V.ease,onUpdate:apply},0)
