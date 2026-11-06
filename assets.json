@@ -13,5 +13,20 @@
       "golden ratio",
       "photography"
     ]
+  },
+  {
+    "slug": "timeline",
+    "title": "Eladio Dieste, timeline",
+    "kind": "Scroll story",
+    "tech": "GSAP · ScrollTrigger · Lenis",
+    "cover": "assets/timeline/cover.jpg",
+    "description": "A layered canvas hero that parts as you scroll, then a works-and-life timeline of the Uruguayan engineer who made clay do the impossible. Smooth scroll throughout.",
+    "tags": [
+      "scrollytelling",
+      "canvas",
+      "parallax",
+      "smooth scroll",
+      "editorial"
+    ]
   }
 ]
